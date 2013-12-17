@@ -40,4 +40,17 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($actual, $expected);
 	}
+
+	/**
+	 * Here we test a note with some URLs in
+	 *
+	 */
+	public function testWithURLCreateTweet()
+	{
+		$note = "This is an introductory sentence. We are going to have a link in this note next.\n\nhttps://duckduckgo.com/?q=how+much+wood+could+a+wood-chuck+chuck+if+a+wood+chuck+could+chuck+wood\n\nThen a closing sentence with the occasionally long word in.";
+		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX');
+		$expected = "This is an introductory sentence. We are going to have a link in this note next.\n\nhttps://duckduckgo.com/?q=how+much+wood+could+a+wood-chuck+chuck+if+a+wood+chuck+could+chuck+wood\n\nThen a… https://abc.de/XXXX";
+
+		$this->assertEquals($actual, $expected);
+	}
 }
