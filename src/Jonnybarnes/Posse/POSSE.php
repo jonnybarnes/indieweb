@@ -72,7 +72,6 @@ class POSSE {
 	}
 
 	/**
-	 * **THIS DEPENDS ON LARAVEL's Eloquent ORM **
 	 * Given a note with #tag s in, the returns an array of those tags
 	 * without the # character
 	 * Further, the tags array will have tags that are lowercase and where the basic
@@ -83,22 +82,15 @@ class POSSE {
 	 */
 	public function getTags($note)
 	{
-		$tagstemp = [];
 		$tags = [];
+		$tagstemp = [];
 		preg_match_all('/#([^\s<>]+)\b/', $note, $tagstemp);
 		foreach($tagstemp[1] as $tag) {
 			$tag = mb_strtolower(preg_replace('/&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);/i','$1',htmlentities($tag)));
-			$tag_search = Tag::where('tag', $tag)->get();
-			if(count($tag_search) == 0) {
-				$newtag = new Tag;
-				$newtag->tag = $tag;
-				$newtag->save();
-				$tag_id = $newtag->id;
-			} else {
-				$tag_id = $tag_search[0]->id;
-			}
-			$tags[$tag_id] = $tag;
+			$tags[] = $tag;
 		}
+
+		$tags = array_unique($tags);
 
 		return $tags;
 	}
