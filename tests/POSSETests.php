@@ -53,4 +53,17 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($actual, $expected);
 	}
+
+	/**
+	 * Here we test the retreival of hashtags from a note
+	 *
+	 */
+	public function testGetTags()
+	{
+		$note = "I love #PHP, how can you not? That would be #naïve";
+		$actual = $this->p->getTags($note);
+		$expected = array("php", "naive");
+
+		$this->assertEquals($actual, $expected);
+	}
 }
