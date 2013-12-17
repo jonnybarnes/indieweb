@@ -27,4 +27,17 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($actual, $expected);
 	}
+
+	/**
+	 * Here we test a note that won't fit into a single tweet
+	 *
+	 */
+	public function testLongCreateTweet()
+	{
+		$note = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long number wasn't it?";
+		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX');
+		$expected = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long… https://abc.de/XXXX";
+
+		$this->assertEquals($actual, $expected);
+	}
 }
