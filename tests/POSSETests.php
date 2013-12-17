@@ -66,4 +66,17 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($actual, $expected);
 	}
+
+	/**
+	 * Here we test a note that has a repeated tag, maybe due to different cases
+	 *
+	 */
+	public function testMultipleTagsInGetTags()
+	{
+		$note = "I love #PHP, it rules. #php";
+		$actual = $this->p->getTags($note);
+		$expected = array("php");
+
+		$this->assertEquals($actual, $expected); 
+	}
 }
