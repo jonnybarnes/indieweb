@@ -15,6 +15,11 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 		$this->p = null;
 	}
 
+	/**
+	 * This is the simplest situation, the tweet is short enough that we
+	 * can add a permashortcitation at the end and be under 140 chars
+	 *
+	 */
 	public function testShortCreateTweet()
 	{
 		$actual = $this->p->createTweet("A short tweet", "abc.de", "XXXX");
