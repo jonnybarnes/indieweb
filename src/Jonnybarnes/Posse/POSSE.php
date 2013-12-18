@@ -43,7 +43,7 @@ class POSSE {
 		$regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
 		//we swap any URLs for 23chars and then count
 		$tweet = preg_replace($regex, '12345678901234567890123', $note_nfc);
-		$len = mb_strlen($tweet);
+		$len = mb_strlen($tweet, "UTF-8");
 
 		return $len;
 	}
@@ -59,8 +59,8 @@ class POSSE {
 
 		preg_match_all($regex, $note_nfc, $urls, PREG_PATTERN_ORDER);
 		$tweet = preg_replace($regex, 'https://t.co/4567890123', $note_nfc);
-		$tweet = mb_substr($tweet, 0, 115);
-		$tweet = mb_strrchr($tweet, ' ', true);
+		$tweet = mb_substr($tweet, 0, 115, "UTF-8");
+		$tweet = mb_strrchr($tweet, ' ', true, "UTF-8");
 
 		foreach($urls[0] as $url) {
 			$tweet = str_replace('https://t.co/4567890123', $url, $tweet);
@@ -86,7 +86,7 @@ class POSSE {
 		$tagstemp = [];
 		preg_match_all('/#([^\s<>]+)\b/', $note, $tagstemp);
 		foreach($tagstemp[1] as $tag) {
-			$tag = mb_strtolower(preg_replace('/&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);/i','$1',htmlentities($tag)));
+			$tag = mb_strtolower(preg_replace('/&([a-z]{1,2})(acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml|caron);/i','$1',htmlentities($tag)), "UTF-8");
 			$tags[] = $tag;
 		}
 

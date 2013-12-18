@@ -16,6 +16,29 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * Test the length checker against various strings
+	 *
+	 */
+	public function testTweetLength()
+	{
+		$array = array(
+			'',
+			'A simple string',
+			'Naïve words',
+			'案ずるより産むが易し。'
+		);
+		
+		$actual = [];
+		foreach($array as $entry) {
+			$actual[] = $this->p->tweetLength($entry);
+		}
+
+		$expected = array(0, 15, 11, 11);
+
+		$this->assertEquals($expected, $actual);
+	}
+
+	/**
 	 * This is the simplest situation, the tweet is short enough that we
 	 * can add a permashortcitation at the end and be under 140 chars
 	 *
