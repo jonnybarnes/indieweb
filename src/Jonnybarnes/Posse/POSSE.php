@@ -19,7 +19,7 @@ class POSSE {
 	 * Create Tweet
 	 *
 	 */
-	public function createTweet($note, $shorturl, $shorturlId)
+	public function createTweet($note, $shorturl, $shorturlId, $ssl = false)
 	{
 		$note_nfc = $this->normalizeNFC($note);
 		$len = $this->tweetLength($note_nfc);
@@ -28,7 +28,8 @@ class POSSE {
 			$tweet = $note_nfc . ' (' . $shorturl . ' ' . $shorturlId . ')';
 		} else {
 			//add link
-			$tweet = $this->ellipsify($note_nfc) . ' https://' . $shorturl . '/' . $shorturlId;
+			$link = ($ssl = true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
+			$tweet = $this->ellipsify($note_nfc) . $link;
 		}
 		return $tweet;
 	}

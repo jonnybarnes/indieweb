@@ -45,7 +45,7 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	 */
 	public function testShortCreateTweet()
 	{
-		$actual = $this->p->createTweet("A short tweet", "abc.de", "XXXX");
+		$actual = $this->p->createTweet("A short tweet", "abc.de", "XXXX", true);
 		$expected = "A short tweet (abc.de XXXX)";
 
 		$this->assertEquals($expected, $actual);
@@ -58,7 +58,7 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	public function testLongCreateTweet()
 	{
 		$note = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long number wasn't it?";
-		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX');
+		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX', true);
 		$expected = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long… https://abc.de/XXXX";
 
 		$this->assertEquals($expected, $actual);
@@ -71,7 +71,7 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	public function testWithURLCreateTweet()
 	{
 		$note = "This is an introductory sentence. We are going to have a link in this note next.\n\nhttps://duckduckgo.com/?q=how+much+wood+could+a+wood-chuck+chuck+if+a+wood+chuck+could+chuck+wood\n\nThen a closing sentence with the occasionally long word in.";
-		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX');
+		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX', true);
 		$expected = "This is an introductory sentence. We are going to have a link in this note next.\n\nhttps://duckduckgo.com/?q=how+much+wood+could+a+wood-chuck+chuck+if+a+wood+chuck+could+chuck+wood\n\nThen a… https://abc.de/XXXX";
 
 		$this->assertEquals($expected, $actual);
