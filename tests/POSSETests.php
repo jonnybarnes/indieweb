@@ -77,6 +77,15 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 		$this->assertEquals($expected, $actual);
 	}
 
+	public function testNoteWithMarkdown()
+	{
+		$note = "This is [a link](http://www.example.org/)";
+		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX', true);
+		$expected = "This is http://www.example.org/ (abc.de XXXX)";
+
+		$this->assertEquals($expected, $actual);
+	}
+
 	/**
 	 * Here we test the retreival of hashtags from a note
 	 *
