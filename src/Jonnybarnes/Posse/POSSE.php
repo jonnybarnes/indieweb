@@ -22,8 +22,10 @@ class POSSE {
 	public function createTweet($note, $shorturl, $shorturlId, $ssl = false)
 	{
 		$note_nfc = $this->normalizeNFC($note);
+		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //3 = ' '+(+' '+)
+		$max = 140 - $linkLength;
 		$len = $this->tweetLength($note_nfc);
-		if($len <= 125) {
+		if($len <= $max) {
 			//add permashortcitation
 			$tweet = $note_nfc . ' (' . $shorturl . ' ' . $shorturlId . ')';
 		} else {
