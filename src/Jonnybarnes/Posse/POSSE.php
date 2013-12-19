@@ -100,13 +100,15 @@ class POSSE {
 	}
 
 	/**
-	 * We need to remove egregious markdown that Twitter won't like
+	 * We need to remove egregious markdown that Twitter won't like.
+	 * For links, leave the text 'unclickable'. If the URL is massively
+	 * important then explicitly include it.
 	 *
 	 */
 	public function twitterify($note)
 	{
 		$regex = '/\[(.*)\]\((.*)\)/';
-		$twitterified = preg_replace($regex, "$2", $note);
+		$twitterified = preg_replace($regex, "$1", $note);
 		return $twitterified;
 	}
 

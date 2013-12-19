@@ -81,7 +81,7 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	{
 		$note = "This is [a link](http://www.example.org/)";
 		$actual = $this->p->createTweet($note, 'abc.de', 'XXXX', true);
-		$expected = "This is http://www.example.org/ (abc.de XXXX)";
+		$expected = "This is a link (abc.de XXXX)";
 
 		$this->assertEquals($expected, $actual);
 	}
