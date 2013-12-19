@@ -111,4 +111,17 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals($expected, $actual); 
 	}
+
+	/**
+	 * Test that we get the ID back from a twitter status URL
+	 *
+	 */
+	public function testReplyTweetId()
+	{
+		$url = 'https://twitter.com/t/status/413496450799378432';
+		$actual = $this->p->replyTweetId($url);
+		$expected = '413496450799378432';
+
+		$this->assertEquals($expected, $actual);
+	}
 }

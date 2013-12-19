@@ -28,11 +28,11 @@ class POSSE {
 		$len = $this->tweetLength($note_tw);
 		if($len <= $max) {
 			//add permashortcitation
-			$tweet = $note_nfc . ' (' . $shorturl . ' ' . $shorturlId . ')';
+			$tweet = $note_tw . ' (' . $shorturl . ' ' . $shorturlId . ')';
 		} else {
 			//add link
-			$link = ($ssl = true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
-			$tweet = $this->ellipsify($note_nfc) . $link;
+			($ssl = true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
+			$tweet = $this->ellipsify($note_tw) . $link;
 		}
 		return $tweet;
 	}
@@ -105,6 +105,21 @@ class POSSE {
 	 */
 	public function twitterify($note)
 	{
-		return $note;
+		$regex = '/\[(.*)\]\((.*)\)/';
+		$twitterified = preg_replace($regex, "$2", $note);
+		return $twitterified;
+	}
+
+	/**
+	 * Grab the status id from a twitter URL
+	 *
+	 */
+	public function replyTweetId($url)
+	{
+		$regex = '/https?:\/\/twitter.com\/[a-zA-Z_]{1,20}\/status\/([0-9]*)/';
+		preg_match($regex, $url, $match);
+		$id = $match[1];
+
+		return $id;
 	}
 }
