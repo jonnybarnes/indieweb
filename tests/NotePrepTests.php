@@ -1,13 +1,13 @@
 <?php
 
-require __DIR__.'/../src/Jonnybarnes/Posse/POSSE.php';
+require __DIR__.'/../src/Jonnybarnes/Posse/NotePrep.php';
 
 class POSSETests extends PHPUnit_Framework_TestCase {
 	protected $p;
 
 	protected function setUp()
 	{
-		$this->p = new \Jonnybarnes\Posse\POSSE();
+		$this->p = new \Jonnybarnes\Posse\NotePrep();
 	}
 
 	protected function tearDown()

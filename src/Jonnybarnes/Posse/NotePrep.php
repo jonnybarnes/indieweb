@@ -2,7 +2,7 @@
 
 namespace Jonnybarnes\Posse;
 
-class POSSE {
+class NotePrep {
 	/**
 	 * Normalize to Unicode NFC
 	 *
@@ -23,7 +23,7 @@ class POSSE {
 	{
 		$note_nfc = $this->normalizeNFC($note);
 		$note_tw = $this->twitterify($note_nfc);
-		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //3 = ' '+(+' '+)
+		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = ' '+(+' '+)
 		$max = 140 - $linkLength;
 		$len = $this->tweetLength($note_tw);
 		if($len <= $max) {
