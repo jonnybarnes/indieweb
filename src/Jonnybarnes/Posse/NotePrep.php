@@ -16,22 +16,22 @@ class NotePrep {
 
 
 	/**
-	 * Create Tweet
+	 * Create Note
 	 *
 	 */
-	public function createTweet($note, $shorturl, $shorturlId, $ssl = false)
+	public function createNote($note, $shorturl, $shorturlId, $siloLimit, $twitter = true, $ssl = false)
 	{
 		$note_nfc = $this->normalizeNFC($note);
 		$note_tw = $this->twitterify($note_nfc);
 		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = ' '+(+' '+)
-		$max = 140 - $linkLength;
-		$len = $this->tweetLength($note_tw);
+		$max = $siloLimit - $linkLength;
+		($twitter == true) ? $len = $this->tweetLength($note_tw) : mb_strlen($note_tw);
 		if($len <= $max) {
 			//add permashortcitation
 			$tweet = $note_tw . ' (' . $shorturl . ' ' . $shorturlId . ')';
 		} else {
 			//add link
-			($ssl = true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
+			($ssl == true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
 			$tweet = $this->ellipsify($note_tw) . $link;
 		}
 		return $tweet;
