@@ -32,7 +32,8 @@ class NotePrep {
 		} else {
 			//add link
 			($ssl == true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
-			$tweet = $this->ellipsify($note_tw, $max, $twitter) . $link;
+			$length = $siloLimit - (1 + 1 + 8 + $shorturl + 1 + $shorturlId);
+			$tweet = $this->ellipsify($note_tw, $length, $twitter) . $link;
 		}
 		return $tweet;
 	}
@@ -67,7 +68,7 @@ class NotePrep {
 			preg_match_all($regex, $note_nfc, $urls, PREG_PATTERN_ORDER);
 			$note_nfc = preg_replace($regex, 'https://t.co/4567890123', $note_nfc);
 		}
-		
+
 		//cut the string, probably now in the middle of word so move back to last space
 		$note_nfc = mb_substr($note_nfc, 0, $length, "UTF-8");
 		$note_nfc = mb_strrchr($note_nfc, ' ', true, "UTF-8");
