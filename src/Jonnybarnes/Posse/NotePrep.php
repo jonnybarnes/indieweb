@@ -74,13 +74,13 @@ class NotePrep {
 		//if we are with twitter, swap template URLs back for the actual ones
 		if($twitter) {
 			foreach($urls[0] as $url) {
-				$tweet = str_replace('https://t.co/4567890123', $url, $tweet);
+				$note_nfc = str_replace('https://t.co/4567890123', $url, $note_nfc);
 			}
 		}
 
-		$tweet .= '…';
+		$note_nfc .= '…';
 
-		return $tweet;
+		return $note_nfc;
 	}
 
 	/**
