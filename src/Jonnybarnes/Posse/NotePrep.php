@@ -32,7 +32,7 @@ class NotePrep {
 		} else {
 			//add link
 			($ssl == true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
-			$tweet = $this->ellipsify($note_tw) . $link;
+			$tweet = $this->ellipsify($note_tw, $max, $twitter) . $link;
 		}
 		return $tweet;
 	}
@@ -57,17 +57,25 @@ class NotePrep {
 	 * permalink
 	 *
 	 */
-	public function ellipsify($note_nfc)
+	public function ellipsify($note_nfc, $length, $twitter)
 	{
-		$regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
+		//if we are dealing with twitter, we need to account for their link medling
+		if($twitter) {
+			$regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
+			preg_match_all($regex, $note_nfc, $urls, PREG_PATTERN_ORDER);
+			$note_nfc = preg_replace($regex, 'https://t.co/4567890123', $note_nfc);
+		}
+		
+		//cut the string, probably now in the middle of word so move back to last space
+		$note_nfc = mb_substr($note_nfc, 0, $length, "UTF-8");
+		$note_nfc = mb_strrchr($note_nfc, ' ', true, "UTF-8");
+		//TODO check for punctuation
 
-		preg_match_all($regex, $note_nfc, $urls, PREG_PATTERN_ORDER);
-		$tweet = preg_replace($regex, 'https://t.co/4567890123', $note_nfc);
-		$tweet = mb_substr($tweet, 0, 115, "UTF-8");
-		$tweet = mb_strrchr($tweet, ' ', true, "UTF-8");
-
-		foreach($urls[0] as $url) {
-			$tweet = str_replace('https://t.co/4567890123', $url, $tweet);
+		//if we are with twitter, swap template URLs back for the actual ones
+		if($twitter) {
+			foreach($urls[0] as $url) {
+				$tweet = str_replace('https://t.co/4567890123', $url, $tweet);
+			}
 		}
 
 		$tweet .= '…';
