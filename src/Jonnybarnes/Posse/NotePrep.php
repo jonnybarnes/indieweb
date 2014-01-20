@@ -70,20 +70,35 @@ class NotePrep {
 		}
 
 		//cut the string, probably now in the middle of word so move back to last space
-		$note_nfc = mb_substr($note_nfc, 0, $length, "UTF-8");
-		$note_nfc = mb_strrchr($note_nfc, ' ', true, "UTF-8");
+		$note_nfc_start = mb_substr($note_nfc, 0, $length, "UTF-8");
+		$note_nfc_start_trunc = mb_strrchr($note_nfc_start, ' ', true, "UTF-8");
+		$parts = explode($note_nfc_start_trunc, $note_nfc);
+		$note_nfc_end = ltrim($parts[1]);
+		$missing_tags = $this->getTags($note_nfc_end);
+		$tags = '';
+		foreach($missing_tags as $tag) {
+			$tags .= ' #' . $tag;
+		}
+		$tags = ltrim($tags);
+		if(mb_strlen($tags) > 0) {
+			$tags_length = mb_strlen($tags);
+			$note_length = mb_strlen($note_nfc_start_trunc);
+			$note_nfc_start_trunc_start = mb_substr($note_nfc_start_trunc, 0, $tags_length, "UTF-8");
+			$note_nfc_start_trunc_start_trunc = mb_strrchr($note_nfc_start_trunc, ' ', true, "UTF-8");
+			$note_nfc_start_trunc = $note_nfc_start_trunc_start_trunc . ' ' . $tags;
+		}
 		//TODO check for punctuation
 
 		//if we are with twitter, swap template URLs back for the actual ones
 		if($twitter) {
 			foreach($urls[0] as $url) {
-				$note_nfc = str_replace('https://t.co/4567890123', $url, $note_nfc);
+				$note_nfc_start_trunc = str_replace('https://t.co/4567890123', $url, $note_nfc_start_trunc);
 			}
 		}
 
-		$note_nfc .= '…';
+		$note_nfc_start_trunc .= '…';
 
-		return $note_nfc;
+		return $note_nfc_start_trunc;
 	}
 
 	/**
