@@ -72,6 +72,12 @@ class NotePrep {
 		//cut the string, probably now in the middle of word so move back to last space
 		$note_nfc_start = mb_substr($note_nfc, 0, $length, "UTF-8");
 		$note_nfc_start_trunc = mb_strrchr($note_nfc_start, ' ', true, "UTF-8");
+		
+		//check for punctuation
+		$bad_punctuation = '@$-~*()_+[]{}|;,<>.';
+		$note_nfc_start_trunc = rtrim($note_nfc_start_trunc, $bad_punctuation);
+
+		//get the missing tags if any
 		$parts = explode($note_nfc_start_trunc, $note_nfc);
 		$note_nfc_end = ltrim($parts[1]);
 		$missing_tags = $this->getTags($note_nfc_end);
@@ -85,9 +91,8 @@ class NotePrep {
 			$note_length = mb_strlen($note_nfc_start_trunc);
 			$note_nfc_start_trunc_start = mb_substr($note_nfc_start_trunc, 0, $tags_length, "UTF-8");
 			$note_nfc_start_trunc_start_trunc = mb_strrchr($note_nfc_start_trunc, ' ', true, "UTF-8");
-			$note_nfc_start_trunc = $note_nfc_start_trunc_start_trunc . ' ' . $tags;
+			$note_nfc_start_trunc = rtrim($note_nfc_start_trunc_start_trunc, $bad_punctuation) . '… ' . $tags;
 		}
-		//TODO check for punctuation
 
 		//if we are with twitter, swap template URLs back for the actual ones
 		if($twitter) {
@@ -96,7 +101,9 @@ class NotePrep {
 			}
 		}
 
-		$note_nfc_start_trunc .= '…';
+		if(mb_strlen($tags) == 0) {
+			$note_nfc_start_trunc .= '…';
+		}
 
 		return $note_nfc_start_trunc;
 	}
