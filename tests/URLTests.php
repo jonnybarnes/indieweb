@@ -23,7 +23,7 @@ class POSSETests extends PHPUnit_Framework_TestCase {
 	{
 		$num = 346;
 		$actual = $this->u->numto64($num);
-		$excpected = 'Rw2';
+		$excpected = 'S5';
 
 		$this->assertEquals($excpected, $actual);
 	}
