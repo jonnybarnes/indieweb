@@ -2,7 +2,7 @@
 
 require __DIR__.'/../src/Jonnybarnes/Posse/URL.php';
 
-class POSSETests extends PHPUnit_Framework_TestCase {
+class URLTests extends PHPUnit_Framework_TestCase {
 	protected $u;
 
 	protected function setUp()

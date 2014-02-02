@@ -2,7 +2,7 @@
 
 require __DIR__.'/../src/Jonnybarnes/Posse/NotePrep.php';
 
-class POSSETests extends PHPUnit_Framework_TestCase {
+class NotePrepTests extends PHPUnit_Framework_TestCase {
 	protected $p;
 
 	protected function setUp()
