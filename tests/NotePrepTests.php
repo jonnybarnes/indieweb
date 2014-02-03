@@ -79,9 +79,9 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 
 	public function testNoteWithMarkdown()
 	{
-		$note = "This is [a link](http://www.example.org/)";
+		$note = "This is [a link](http://www.example.org/) about a [topic](http://www.example.com/).";
 		$actual = $this->p->createNote($note, 'abc.de', 'XXXX', 140, true, true);
-		$expected = "This is a link (abc.de XXXX)";
+		$expected = "This is a link about a topic. (abc.de XXXX)";
 
 		$this->assertEquals($expected, $actual);
 	}

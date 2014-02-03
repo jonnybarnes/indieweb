@@ -140,7 +140,7 @@ class NotePrep {
 	 */
 	public function twitterify($note)
 	{
-		$regex = '/\[(.*)\]\((.*)\)/';
+		$regex = '/\[(.*?)\]\((.*?)\)/';
 		$twitterified = preg_replace($regex, "$1", $note);
 		return $twitterified;
 	}
