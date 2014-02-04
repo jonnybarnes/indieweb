@@ -137,4 +137,25 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 	
 		$this->assertEquals($expected, $actual);
 	}
+
+	/**
+	 * A note that failed for ebing too long
+	 *
+	 */
+	public function testATWeetThatFailedIRL()
+	{
+		$note = 'Here’s some links and things I’ve found interesting recently:
+
+* [https://github.com/veltman/principles](https://github.com/veltman/principles) -- a nice little list of rules to try to abide to when developing for the web,
+* [http://adrianshort.org/2013/12/22/some-websites-should-be-unblockable/](http://adrianshort.org/2013/12/22/some-websites-should-be-unblockable/) -- an excellent point about the inherent downsides of having a state mandated censored web,
+* [http://www.motherjones.com/environment/2013/12/inquiring-minds-joshua-greene-moral-tribes](http://www.motherjones.com/environment/2013/12/inquiring-minds-joshua-greene-moral-tribes) -- some scientists put our sense of right and wrong under the microscope, with fascinating results,
+* [http://www.newstatesman.com/2013/11/5-benefit-changes-government-dont-want-you-know-about](http://www.newstatesman.com/2013/11/5-benefit-changes-government-dont-want-you-know-about) -- how the UK government is screwing over the disabled people in our country, truly disgusting,
+* [http://blog.adrianroselli.com/2014/01/w3c-eme-is-not-drm-nor-other-fear.html](http://blog.adrianroselli.com/2014/01/w3c-eme-is-not-drm-nor-other-fear.html) -- an excellent article on what the W3C EME is and why it isn’t DRM.
+
+Some of these may spur full articles in the future. Maybe not. #readinglist'
+		$actual = $this->p->createNote($note, 'abc.de', 'XXX', 140, true, true);
+		$excpected = 'Here’s some links and things I’ve found interesting recently: * https://github.com/veltman/principles -- a nice… #readinglist https://abc.de/XXX';
+
+		$this->assetEquals($expected, $actual);
+	}
 }
