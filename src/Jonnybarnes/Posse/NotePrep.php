@@ -32,7 +32,7 @@ class NotePrep {
 		} else {
 			//add link
 			($ssl == true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
-			$length = $siloLimit - (1 + 1 + 8 + $shorturl + 1 + $shorturlId);
+			$length = $siloLimit - (1 + 1 + mb_strlen($link)); //… + ' ' + link
 			$tweet = $this->ellipsify($note_tw, $length, $twitter) . $link;
 		}
 		return $tweet;
@@ -87,10 +87,10 @@ class NotePrep {
 		}
 		$tags = ltrim($tags);
 		if(mb_strlen($tags) > 0) {
-			$tags_length = mb_strlen($tags);
-			$note_length = mb_strlen($note_nfc_start_trunc);
-			$note_nfc_start_trunc_start = mb_substr($note_nfc_start_trunc, 0, $tags_length, "UTF-8");
-			$note_nfc_start_trunc_start_trunc = mb_strrchr($note_nfc_start_trunc, ' ', true, "UTF-8");
+			$tags_length = mb_strlen($tags, "UTF-8");
+			$note_length = mb_strlen($note_nfc_start_trunc, "UTF-8");
+			$note_nfc_start_trunc_start = mb_substr($note_nfc_start_trunc, 0, $note_length - $tags_length, "UTF-8");
+			$note_nfc_start_trunc_start_trunc = mb_strrchr($note_nfc_start_trunc_start, ' ', true, "UTF-8");
 			$note_nfc_start_trunc = rtrim($note_nfc_start_trunc_start_trunc, $bad_punctuation) . '… ' . $tags;
 		}
 
