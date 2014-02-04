@@ -139,6 +139,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @group issue-1
 	 * A note that failed for ebing too long
 	 *
 	 */
@@ -152,10 +153,12 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 * [http://www.newstatesman.com/2013/11/5-benefit-changes-government-dont-want-you-know-about](http://www.newstatesman.com/2013/11/5-benefit-changes-government-dont-want-you-know-about) -- how the UK government is screwing over the disabled people in our country, truly disgusting,
 * [http://blog.adrianroselli.com/2014/01/w3c-eme-is-not-drm-nor-other-fear.html](http://blog.adrianroselli.com/2014/01/w3c-eme-is-not-drm-nor-other-fear.html) -- an excellent article on what the W3C EME is and why it isn’t DRM.
 
-Some of these may spur full articles in the future. Maybe not. #readinglist'
+Some of these may spur full articles in the future. Maybe not. #readinglist';
 		$actual = $this->p->createNote($note, 'abc.de', 'XXX', 140, true, true);
-		$excpected = 'Here’s some links and things I’ve found interesting recently: * https://github.com/veltman/principles -- a nice… #readinglist https://abc.de/XXX';
+		$expected = 'Here’s some links and things I’ve found interesting recently:
 
-		$this->assetEquals($expected, $actual);
+* https://github.com/veltman/principles -- a nice… #readinglist https://abc.de/XXX';
+
+		$this->assertEquals($expected, $actual);
 	}
 }
