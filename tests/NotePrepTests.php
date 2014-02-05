@@ -126,6 +126,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
+	 * @group issue-1-reg
 	 * Test that hashtags get included
 	 *
 	 */
