@@ -90,6 +90,10 @@ class NotePrep {
 			$tags_length = mb_strlen($tags, "UTF-8");
 			$note_length = mb_strlen($note_nfc_start_trunc, "UTF-8");
 			$note_nfc_start_trunc_start = mb_substr($note_nfc_start_trunc, 0, $note_length - $tags_length, "UTF-8");
+			$note_nfc_start_trunc_start_trim = rtrim($note_nfc_start_trunc_start, $bad_punctuation);
+			if(mb_strlen($note_nfc_start_trunc_start_trim, "UTF-8") < mb_strlen($note_nfc_start_trunc_start, "UTF-8")) {
+				$note_nfc_start_trunc_start = $note_nfc_start_trunc_start_trim . ' ';
+			}
 			$note_nfc_start_trunc_start_trunc = mb_strrchr($note_nfc_start_trunc_start, ' ', true, "UTF-8");
 			$note_nfc_start_trunc = rtrim($note_nfc_start_trunc_start_trunc, $bad_punctuation) . '… ' . $tags;
 		}
