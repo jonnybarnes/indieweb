@@ -23,12 +23,17 @@ class NotePrep {
 	{
 		$note_nfc = $this->normalizeNFC($note);
 		$note_tw = $this->twitterify($note_nfc);
-		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = ' '+(+' '+)
+		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = 'SPACE' + ( + / + )
+		if($ssl == true) { $linkLength = $linkLength + 8; } else { $linkLength = $linkLength + 7; } //wether we're using https links or not
 		$max = $siloLimit - $linkLength;
 		($twitter == true) ? $len = $this->tweetLength($note_tw) : mb_strlen($note_tw);
 		if($len <= $max) {
-			//add permashortcitation
-			$tweet = $note_tw . ' (' . $shorturl . ' ' . $shorturlId . ')';
+			//add permashortcitation link
+			if($ssl == true) {
+				$tweet = $note_tw . ' (https://' . $shorturl . '/' . $shorturlId . ')';
+			} else {
+				$tweet = $note_tw . ' (http://' . $shorturl . '/' . $shorturlId . ')';
+			}
 		} else {
 			//add link
 			($ssl == true) ? $link = ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
