@@ -46,7 +46,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 	public function testShortCreateTweet()
 	{
 		$actual = $this->p->createNote("A short tweet", "abc.de", "XXXX", 140, true, true);
-		$expected = "A short tweet (abc.de XXXX)";
+		$expected = "A short tweet (https://abc.de/XXXX)";
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -81,7 +81,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 	{
 		$note = "This is [a link](http://www.example.org/) about a [topic](http://www.example.com/).";
 		$actual = $this->p->createNote($note, 'abc.de', 'XXXX', 140, true, true);
-		$expected = "This is a link about a topic. (abc.de XXXX)";
+		$expected = "This is a link about a topic. (https://abc.de/XXXX)";
 
 		$this->assertEquals($expected, $actual);
 	}
@@ -141,7 +141,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase {
 
 	/**
 	 * @group issue-1
-	 * A note that failed for ebing too long
+	 * A note that failed for being too long
 	 *
 	 */
 	public function testATWeetThatFailedIRL()
