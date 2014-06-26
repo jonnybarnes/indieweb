@@ -25,7 +25,11 @@ class NotePrep {
 		$note_tw = $this->twitterify($note_nfc);
 		$linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = 'SPACE' + ( + / + )
 		if($ssl == true) { $linkLength = $linkLength + 8; } else { $linkLength = $linkLength + 7; } //wether we're using https links or not
-		$max = $siloLimit - $linkLength;
+		if($twitter == true) {
+			$max = $siloLimit - (2 + 23); //( + ) + t.co linkllength
+		} else {
+			$max = $siloLimit - $linkLength;
+		}
 		($twitter == true) ? $len = $this->tweetLength($note_tw) : mb_strlen($note_tw);
 		if($len <= $max) {
 			//add permashortcitation link
