@@ -11,9 +11,9 @@ manually tell composer about this GitHub repo:
 ```json
 "repositories": [
     {
-        "name": "jonnybarnes/posse",
+        "name": "jonnybarnes/indieweb",
         "type": "git",
-        "url": "https://github.com/jonnybarnes/posse.git"
+        "url": "https://github.com/jonnybarnes/indieweb.git"
     }
 ]
 ```
@@ -22,6 +22,6 @@ Then it’s simple a case of adding a dependency as normal:
 
 ```json
 "require": {
-    "jonnybanres/posse": "dev-master"
+    "jonnybanres/indieweb": "dev-master"
 }
 ```
