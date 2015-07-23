@@ -4,10 +4,12 @@ namespace Jonnybarnes\IndieWeb;
 
 class Numbers
 {
+    const NB60CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz';
+    const NB64CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$';
     /**
      * NewBase64
      *
-     * Convert a decimal number in NewBase64
+     * Convert a decimal number to NewBase64
      * @param  int
      * @return string
      */
@@ -15,9 +17,8 @@ class Numbers
     {
         $string = '';
         $sign = '';
-        $chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$';
 
-        if (!isset($num) || $num === 0) {
+        if (intval($num) === 0) {
             return 0;
         }
 
@@ -28,7 +29,7 @@ class Numbers
 
         while ($num > 0) {
             $counter = $num % 64;
-            $string = $chars[$counter] . $string;
+            $string = self::NB64CHARS[$counter] . $string;
             $num = ($num - $counter)/ 64;
         }
         return $sign . $string;
@@ -44,47 +45,24 @@ class Numbers
     public function b64tonum($nb64num)
     {
         $num = 0;
-        $len = strlen($nb64num);
-        for ($counter = 0; $counter < $len; $counter++) { // iterate from first to last char of $nb64num
-            $char = ord($nb64num[$counter]); //  put current ASCII of char into $char
-            if ($char>=48 && $char<=57) {
-                $char=$char-48;
-            } elseif ($char>=65 && $char<=72) {
-                $char-=55;
-            } elseif ($char==73 || $char==108 || $char==33) {
-                $char=1; // typo capital I, lowercase l, ! to 1
-            } elseif ($char>=74 && $char<=78) {
-                $char-=56;
-            } elseif ($char==79) {
-                $char=0; // error correct typo capital O to 0
-            } elseif ($char>=80 && $char<=90) {
-                $char-=57;
-            } elseif ($char==95) {
-                $char=34; // underscore
-            } elseif ($char>=97 && $char<=107) {
-                $char-=62;
-            } elseif ($char>=109 && $char<=122) {
-                $char-=63;
-            } elseif ($char==45) {
-                $char=60; // dash
-            } elseif ($char==44) {
-                $char=61; // plus
-            } elseif ($char==42) {
-                $char=62; // asterisk
-            } elseif ($char==36) {
-                $char=63; // dollar sign
-            } else {
-                $char = 0; // treat all other noise as 0
-            }
-            $num = 64*$num + $char;
+        
+        $map = array_flip(str_split(self::NB64CHARS));
+        $map['l'] = 1;
+        $map['I'] = 1;
+        $map['O'] = 0;
+
+        $chars = str_split($nb64num);
+        foreach ($chars as $char) {
+            $num = array_key_exists($char, $map) ? $num*64 + $map[$char] : $num*64;
         }
+
         return $num;
     }
 
     /**
      * NewBase60
      *
-     * Convert a decimal nulber to NewBase60
+     * Convert a decimal number to NewBase60
      * @param  int
      * @return string
      */
@@ -92,7 +70,6 @@ class Numbers
     {
         $string = '';
         $sign = '';
-        $chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz';
 
         if (intval($num) == 0) {
             return 0;
@@ -105,7 +82,7 @@ class Numbers
 
         while ($num > 0) {
             $digit = $num % 60;
-            $string = $chars[$digit] . $string;
+            $string = self::NB60CHARS[$digit] . $string;
             $num = ($num - $digit) / 60;
         }
         return $sign . $string;
@@ -118,35 +95,20 @@ class Numbers
      * @param  string
      * @return int
      */
-    public function b60tonum($var)
+    public function b60tonum($nb60num)
     {
         $num = 0;
-        $len = strlen($var);
-        for ($counter = 0; $counter < $len; $counter++) { // iterate from first to last char of $var
-            $char = ord($var[$counter]); //  put current ASCII of char into $char
-            if ($char>=48 && $char<=57) {
-                $char=$char-48;
-            } elseif ($char>=65 && $char<=72) {
-                $char-=55;
-            } elseif ($char==73 || $char==108) {
-                $char=1; // typo capital I, lowercase l to 1
-            } elseif ($char>=74 && $char<=78) {
-                $char-=56;
-            } elseif ($char==79) {
-                $char=0; // error correct typo capital O to 0
-            } elseif ($char>=80 && $char<=90) {
-                $char-=57;
-            } elseif ($char==95) {
-                $char=34; // underscore
-            } elseif ($char>=97 && $char<=107) {
-                $char-=62;
-            } elseif ($char>=109 && $char<=122) {
-                $char-=63;
-            } else {
-                $char = 0; // treat all other noise as 0
-            }
-            $num = 60*$num + $char;
+
+        $map = array_flip(str_split(self::NB60CHARS));
+        $map['l'] = 1;
+        $map['I'] = 1;
+        $map['O'] = 0;
+
+        $chars = str_split($nb60num);
+        foreach ($chars as $char) {
+            $num = array_key_exists($char, $map) ? $num*60 + $map[$char] : $num*60;
         }
+
         return $num;
     }
 }
