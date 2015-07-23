@@ -1,29 +1,28 @@
 {
-    "name": "jonnybarnes/posse",
+    "name": "jonnybarnes/indieweb",
     "type": "library",
-    "description": "POSSE helper functions",
+    "description": "IndieWeb helper functions",
     "keywords": ["posse", "indieweb"],
-    "homepage": "https://github.com/jonnybarnes/posse",
+    "homepage": "https://github.com/jonnybarnes/indieweb",
     "license": "MIT",
     "authors": [
         {
             "name": "Jonny Barnes",
-            "email": "jonny@jonnybarnes.net"
+            "email": "jonny@jonnybarnes.uk"
         }
     ],
     "support": {
-        "issues": "https://github.com/mjonnybarnes/posse/issues"
+        "issues": "https://github.com/mjonnybarnes/indieweb/issues"
     },
     "require": {
-        "php": ">=5.4.0",
-        "patchwork/utf8": "1.1.*"
+        "php": ">=5.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
-        "psr-0": {
-            "Jonnybarnes\\Posse": "src/"
+        "psr-4": {
+            "Jonnybarnes\\IndieWeb\\": "src"
         }
     }
 }
