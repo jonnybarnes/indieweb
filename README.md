@@ -8,21 +8,20 @@ However this is still easy to install with the magic that is composer. First we
 need to add a repositories section to our `composer.json` file in order to
 manually tell composer about this GitHub repo:
 
-~~~
+```json
 "repositories": [
-	{
-		"name": "jonnybarnes/posse",
-		"type": "git",
-		"url": "https://github.com/jonnybarnes/posse.git"
-	}
+    {
+        "name": "jonnybarnes/posse",
+        "type": "git",
+        "url": "https://github.com/jonnybarnes/posse.git"
+    }
 ]
-~~~
+```
 
 Then it’s simple a case of adding a dependency as normal:
 
-~~~
+```json
 "require": {
-	...
-	"jonnybanres/posse": "dev-master"
+    "jonnybanres/posse": "dev-master"
 }
-~~~
+```
