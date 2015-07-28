@@ -43,8 +43,8 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testShortCreateTweet()
     {
-        $actual = $this->noteprep->createNote("A short tweet", "abc.de", "XXXX", 140, true, true);
-        $expected = "A short tweet (https://abc.de/XXXX)";
+        $actual = $this->noteprep->createNote('A short tweet', 'abc.de', 'XXXX', 140, true, true);
+        $expected = 'A short tweet (https://abc.de/XXXX)';
 
         $this->assertEquals($expected, $actual);
     }
@@ -54,9 +54,9 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testLongCreateTweet()
     {
-        $note = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long number wasn't it?";
+        $note = 'This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long number wasn’t it?';
         $actual = $this->noteprep->createNote($note, 'abc.de', 'XXXX', 140, true, true);
-        $expected = "This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long… https://abc.de/XXXX";
+        $expected = 'This is a long note. The following is fluff to fill up. 1234567890123456789012345678901234567890 That was a long… https://abc.de/XXXX';
 
         $this->assertEquals($expected, $actual);
     }
@@ -78,9 +78,9 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testNoteWithMarkdown()
     {
-        $note = "This is [a link](http://www.example.org/) about a [topic](http://www.example.com/).";
+        $note = 'This is [a link](http://www.example.org/) about a [topic](http://www.example.com/).';
         $actual = $this->noteprep->createNote($note, 'abc.de', 'XXXX', 140, true, true);
-        $expected = "This is a link about a topic. (https://abc.de/XXXX)";
+        $expected = 'This is a link about a topic. (https://abc.de/XXXX)';
 
         $this->assertEquals($expected, $actual);
     }
@@ -90,7 +90,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testGetTags()
     {
-        $note = "I love #PHP, how can you not? That would be #naïve";
+        $note = 'I love #PHP, how can you not? That would be #naïve';
         $actual = $this->noteprep->getTags($note);
         $expected = array("php", "naive");
 
@@ -102,7 +102,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testMultipleTagsInGetTags()
     {
-        $note = "I love #PHP, it rules. #php";
+        $note = 'I love #PHP, it rules. #php';
         $actual = $this->noteprep->getTags($note);
         $expected = array("php");
 
@@ -126,9 +126,9 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
      */
     public function testLongNoteWithHashtags()
     {
-        $note = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. #longnote";
+        $note = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. #longnote';
         $actual = $this->noteprep->createNote($note, 'abc.de', 'XXXX', 140, true, true);
-        $expected = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris… #longnote https://abc.de/XXXX";
+        $expected = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris… #longnote https://abc.de/XXXX';
 
         $this->assertEquals($expected, $actual);
     }
