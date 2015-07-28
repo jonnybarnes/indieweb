@@ -3,25 +3,30 @@ These tools should help with things like POSSE-ing. Currently I'm only working
 with Twitter but adding other services is in the pipeline.
 
 ##Installing
-As this is still in early development I haven’t added this to packagist yet.
-However this is still easy to install with the magic that is composer. First we
-need to add a repositories section to our `composer.json` file in order to
-manually tell composer about this GitHub repo:
+Super simple with [composer](https://getcomposer.org):
 
-```json
-"repositories": [
-    {
-        "name": "jonnybarnes/indieweb",
-        "type": "git",
-        "url": "https://github.com/jonnybarnes/indieweb.git"
-    }
-]
+```bash
+composer require jonnybarnes/indieweb
 ```
 
-Then it’s simple a case of adding a dependency as normal:
+##Numbers
+The `Numbers` class allows you to convert between decimal and either NewBase60
+or NewBase64, and vice versa.
 
-```json
-"require": {
-    "jonnybanres/indieweb": "dev-master"
-}
+```php
+$numbers = new Numbers();
+$nb60id = $numbers->b60tunum($realId);
+```
+
+##NotePrep
+The `NotePrep` class is for use when preparing a note that you want to
+[POSSE](https://indiewebcamp.com/POSSE) to another site, such as Twitter. With a
+provided note the `createNote` method will add a link to the original copy,
+truncating the note if necessary.
+
+```php
+$noteprep = new NotePrep();
+$originalNote = 'A lovely note.';
+$posseCopy = $noteprep->createNote($note, 'https://abc.de/n/id', 140, true);
+echo $posseCopy;// 'A lovely note. (https://abc.de/n/id)'
 ```
