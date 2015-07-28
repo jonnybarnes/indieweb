@@ -64,17 +64,7 @@ class Numbers
      */
     protected function decToNewBase($num, $base)
     {
-        switch ($base) {
-            case 60:
-                $newBaseChars = $this->nb60chars;
-                break;
-            case 64:
-                $newBaseChars = $this->nb64chars;
-                break;
-            default:
-                throw new \Exception('Unsupported number base');
-                break;
-        }
+        $newBaseChars = $this->loadCharacters($base);
 
         $string = '';
         $sign = '';
@@ -105,17 +95,7 @@ class Numbers
      */
     protected function newBaseToDec($nbNum, $base)
     {
-        switch ($base) {
-            case 60:
-                $newBaseChars = $this->nb60chars;
-                break;
-            case 64:
-                $newBaseChars = $this->nb64chars;
-                break;
-            default:
-                throw new \Exception('Unsupported number base');
-                break;
-        }
+        $newBaseChars = $this->loadCharacters($base);
 
         $map = array_flip(str_split($newBaseChars));
         $map['l'] = 1;
@@ -129,5 +109,23 @@ class Numbers
         }
 
         return $num;
+    }
+
+    /**
+     * Load the right NewBase characters.
+     *
+     * @param  int  the base
+     * @return string the characters
+     */
+    protected function loadCharacters($base)
+    {
+        switch ($base) {
+            case 60:
+                return $this->nb60chars;
+            case 64:
+                return $this->nb64chars;
+            default:
+                throw new \Exception('Unsupported number base');
+        }
     }
 }
