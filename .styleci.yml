@@ -3,5 +3,5 @@ preset: recommended
 enabled:
   - long_array_syntax
 
-disdabled:
+disabled:
   - short_array_syntax
