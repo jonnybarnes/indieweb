@@ -2,7 +2,7 @@
 
 require __DIR__.'/../src/Numbers.php';
 
-class URLTests extends PHPUnit_Framework_TestCase
+class NumbersTests extends PHPUnit_Framework_TestCase
 {
     protected $numbers;
 

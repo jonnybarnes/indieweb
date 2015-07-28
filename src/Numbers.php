@@ -4,8 +4,9 @@ namespace Jonnybarnes\IndieWeb;
 
 class Numbers
 {
-    const NB60CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz';
-    const NB64CHARS = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$';
+    protected $nb60chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz';
+    protected $nb64chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$';
+
     /**
      * NewBase64
      *
@@ -15,24 +16,7 @@ class Numbers
      */
     public function numto64($num)
     {
-        $string = '';
-        $sign = '';
-
-        if (intval($num) === 0) {
-            return 0;
-        }
-
-        if ($num < 0) {
-            $num = -$num;
-            $sign = '-';
-        }
-
-        while ($num > 0) {
-            $counter = $num % 64;
-            $string = self::NB64CHARS[$counter] . $string;
-            $num = ($num - $counter)/ 64;
-        }
-        return $sign . $string;
+        return $this->decToNewBase($num, 64);
     }
 
     /**
@@ -44,19 +28,7 @@ class Numbers
      */
     public function b64tonum($nb64num)
     {
-        $num = 0;
-        
-        $map = array_flip(str_split(self::NB64CHARS));
-        $map['l'] = 1;
-        $map['I'] = 1;
-        $map['O'] = 0;
-
-        $chars = str_split($nb64num);
-        foreach ($chars as $char) {
-            $num = array_key_exists($char, $map) ? $num*64 + $map[$char] : $num*64;
-        }
-
-        return $num;
+        return $this->newBaseToDec($nb64num, 64);
     }
 
     /**
@@ -68,6 +40,42 @@ class Numbers
      */
     public function numto60($num)
     {
+        return $this->decToNewBase($num, 60);
+    }
+
+    /**
+     * Reverse NewBase60
+     *
+     * Convert a NewBas60 number to decimal
+     * @param  string
+     * @return int
+     */
+    public function b60tonum($nb60num)
+    {
+        return $this->newBaseToDec($nb60num, 60);
+    }
+
+    /**
+     * The actual conversion logic.
+     *
+     * @param  int decimal number
+     * @param  int new base to conver to
+     * @return string
+     */
+    protected function decToNewBase($num, $base)
+    {
+        switch ($base) {
+            case 60:
+                $newBaseChars = $this->nb60chars;
+                break;
+            case 64:
+                $newBaseChars = $this->nb64chars;
+                break;
+            default:
+                throw new \Exception('Unsupported number base');
+                break;
+        }
+
         $string = '';
         $sign = '';
 
@@ -81,32 +89,43 @@ class Numbers
         }
 
         while ($num > 0) {
-            $digit = $num % 60;
-            $string = self::NB60CHARS[$digit] . $string;
-            $num = ($num - $digit) / 60;
+            $digit = $num % $base;
+            $string = $newBaseChars[$digit] . $string;
+            $num = ($num - $digit) / $base;
         }
         return $sign . $string;
     }
 
     /**
-     * Reverse NewBase60
+     * The actual conversion logic.
      *
-     * Convert a NewBas60 number to decimal
-     * @param  string
+     * @param  string new base number
+     * @param  int new base to conver to
      * @return int
      */
-    public function b60tonum($nb60num)
+    protected function newBaseToDec($nbNum, $base)
     {
-        $num = 0;
+        switch ($base) {
+            case 60:
+                $newBaseChars = $this->nb60chars;
+                break;
+            case 64:
+                $newBaseChars = $this->nb64chars;
+                break;
+            default:
+                throw new \Exception('Unsupported number base');
+                break;
+        }
 
-        $map = array_flip(str_split(self::NB60CHARS));
+        $map = array_flip(str_split($newBaseChars));
         $map['l'] = 1;
         $map['I'] = 1;
         $map['O'] = 0;
 
-        $chars = str_split($nb60num);
+        $num = 0;
+        $chars = str_split($nbNum);
         foreach ($chars as $char) {
-            $num = array_key_exists($char, $map) ? $num*60 + $map[$char] : $num*60;
+            $num = array_key_exists($char, $map) ? $num*$base + $map[$char] : $num*$base;
         }
 
         return $num;
