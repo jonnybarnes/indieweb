@@ -15,54 +15,39 @@ class NotePrep
      */
     public function normalizeNFC($note)
     {
-        $noteNFC = normalizer_normalize($note, Normalizer::FORM_C);
-
-        return $noteNFC;
+        return normalizer_normalize($note, Normalizer::FORM_C);
     }
 
     /**
      * Create a version of the note suitable for POSSEing.
      *
      * @param  string  The full note
-     * @param  string  The Short URL host
-     * @param  string  The Short URL path
+     * @param  string  The Short URL
      * @param  int     The character limit for the silo
      * @param  bool    Wether we are posting to Twitter, which needs special considerations
      * @param  bool    Wether we are using https
      *
      * @return string The modified note
      */
-    public function createNote($note, $shorturl, $shorturlId, $siloLimit, $twitter = true, $ssl = false)
+    public function createNote($note, $shorturl, $siloLimit, $twitter)
     {
         $noteNFC = $this->normalizeNFC($note);
-        $noteTwittered = $this->twitterify($noteNFC);
-        $linkLength = mb_strlen($shorturl, 'UTF-8') + mb_strlen($shorturlId, 'UTF-8') + 4; //4 = 'SPACE' + ( + / + )
-        if ($ssl == true) {
-            $linkLength = $linkLength + 8; // https://
-        } else {
-            $linkLength = $linkLength + 7; // http://
-        }
-        if ($twitter == true) {
-            $max = $siloLimit - (2 + 23); //( + ) + t.co linkllength
-        } else {
-            $max = $siloLimit - $linkLength;
-        }
-        $len = ($twitter == true) ? $this->tweetLength($noteTwittered) : mb_strlen($noteTwittered);
+        $noteSimplified = $this->simplify($noteNFC);
+        $linkLength = mb_strlen($shorturl, 'UTF-8');
+        //determine the max length the processed note can be, take into account
+        //Twitter’s substitution of links
+        $max = ($twitter === true) ? $siloLimit - (23 + 1 + 2) : $siloLimit - $linkLength - 3;
+        //what length is the note?
+        $len = ($twitter === true) ? $this->tweetLength($noteSimplified) : mb_strlen($noteSimplified);
         if ($len <= $max) {
-            //add permashortcitation link
-            if ($ssl == true) {
-                $tweet = $noteTwittered . ' (https://' . $shorturl . '/' . $shorturlId . ')';
-            } else {
-                $tweet = $noteTwittered . ' (http://' . $shorturl . '/' . $shorturlId . ')';
-            }
-        } else {
-            //add link
-            $link = ($ssl == true) ? ' https://' . $shorturl . '/' . $shorturlId : ' http://' . $shorturl . '/' . $shorturlId;
-            $length = $siloLimit - (1 + 1 + mb_strlen($link)); //… + ' ' + link
-            $tweet = $this->ellipsify($noteTwittered, $length, $twitter) . $link;
+            //we have enough room to simply add a permashortcitation link
+            return $noteSimplified . ' (' . $shorturl . ')';
         }
+        //we need to truncate the note before we add the link
+        $length = $siloLimit - (1 + 1 + $linkLength); //… + ' ' + link
+        $processedNote = $this->ellipsify($noteSimplified, $length, $twitter) . $shorturl;
 
-        return $tweet;
+        return $processedNote;
     }
 
     /**
@@ -95,55 +80,66 @@ class NotePrep
     public function ellipsify($noteNFC, $length, $twitter)
     {
         //if we are dealing with twitter, we need to account for their link medling
-        if ($twitter == true) {
+        if ($twitter === true) {
             //because we will be linking back, that also gets changed, this affect where we cut the note
-            $length = 115;
+            $length = 115;//140 - 23 - 1 - 1
             $regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
             preg_match_all($regex, $noteNFC, $urls, PREG_PATTERN_ORDER);
             $noteNFC = preg_replace($regex, 'https://t.co/4567890123', $noteNFC);
         }
 
         //cut the string, probably now in the middle of word so move back to last space
-        $noteNFCStart = mb_substr($noteNFC, 0, $length, 'UTF-8');
-        $noteNFCStartTrunc = mb_strrchr($noteNFCStart, ' ', true, 'UTF-8');
+        $cutNote = mb_substr($noteNFC, 0, $length, 'UTF-8');
+        $truncatedNote = mb_strrchr($cutNote, ' ', true, 'UTF-8');
 
-        //check for punctuation
+        //check for ending punctuation
         $badPunctuation = '@$-~*()_+[]{}|;,<>.';
-        $noteNFCStartTrunc = rtrim($noteNFCStartTrunc, $badPunctuation);
+        $truncatedNote = rtrim($truncatedNote, $badPunctuation);
 
         //get the missing tags if any
-        $parts = explode($noteNFCStartTrunc, $noteNFC);
-        $noteNFCEnd = ltrim($parts[1]);
-        $missingTags = $this->getTags($noteNFCEnd);
-        $tags = '';
+        $parts = explode($truncatedNote, $noteNFC);
+        $cutPart = ltrim($parts[1]);
+        $missingTags = $this->getTags($cutPart);
+        $tagsToAdd = '';
         foreach ($missingTags as $tag) {
-            $tags .= ' #' . $tag;
+            $tagsToAdd .= ' #' . $tag;
         }
-        $tags = ltrim($tags);
-        if (mb_strlen($tags) > 0) {
-            $tagsLength = mb_strlen($tags, 'UTF-8');
-            $noteLength = mb_strlen($noteNFCStartTrunc, 'UTF-8');
-            $noteNFCStartTruncStart = mb_substr($noteNFCStartTrunc, 0, $noteLength - $tagsLength, 'UTF-8');
-            $noteNFCStartTruncStartTrim = rtrim($noteNFCStartTruncStart, $badPunctuation);
-            if (mb_strlen($noteNFCStartTruncStartTrim, 'UTF-8') < mb_strlen($noteNFCStartTruncStart, 'UTF-8')) {
-                $noteNFCStartTruncStart = $noteNFCStartTruncStartTrim . ' ';
+        $tagsToAdd = ltrim($tagsToAdd);
+
+        //add any missing tags
+        if (mb_strlen($tagsToAdd) > 0) {
+            //work out lengths
+            $tagsToAddLength = mb_strlen($tagsToAdd, 'UTF-8');
+            $truncNoteLength = mb_strlen($truncatedNote, 'UTF-8');
+            //truncate
+            $truncForTags = mb_substr($truncatedNote, 0, $truncNoteLength - $tagsToAddLength - 1, 'UTF-8');
+            //move to last space if necessary
+            if (in_array(
+                $truncatedNote[mb_strlen($truncForTags)],
+                array_merge(
+                    str_split($badPunctuation),
+                    array(' ')
+                )
+            ) === false) {
+                $truncForTags = mb_strrchr($truncForTags, ' ', true, 'UTF-8');
             }
-            $noteNFCStartTruncStartTrunc = mb_strrchr($noteNFCStartTruncStart, ' ', true, 'UTF-8');
-            $noteNFCStartTrunc = rtrim($noteNFCStartTruncStartTrunc, $badPunctuation) . '… ' . $tags;
+            //add ellipsis then tags
+            $truncatedNote = rtrim($truncForTags, $badPunctuation) . '… ' . $tagsToAdd . ' ';
+        }
+
+        //however, if no tags were added, just add an ellipsis
+        if (mb_strlen($tagsToAdd) == 0) {
+            $truncatedNote .= '… ';
         }
 
         //if we are with twitter, swap template URLs back for the actual ones
         if ($twitter) {
             foreach ($urls[0] as $url) {
-                $noteNFCStartTrunc = str_replace('https://t.co/4567890123', $url, $noteNFCStartTrunc);
+                $truncatedNote = str_replace('https://t.co/4567890123', $url, $truncatedNote);
             }
         }
 
-        if (mb_strlen($tags) == 0) {
-            $noteNFCStartTrunc .= '…';
-        }
-
-        return $noteNFCStartTrunc;
+        return $truncatedNote;
     }
 
     /**
@@ -190,12 +186,12 @@ class NotePrep
      *
      * @return string The modified note
      */
-    public function twitterify($note)
+    public function simplify($note)
     {
         $regex = '/\[(.*?)\]\((.*?)\)/';
-        $twitterified = preg_replace($regex, '$1', $note);
+        $simplified = preg_replace($regex, '$1', $note);
 
-        return $twitterified;
+        return $simplified;
     }
 
     /**
