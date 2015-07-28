@@ -118,6 +118,7 @@ class Numbers
      * Load the right NewBase* characters.
      *
      * @param  int  The base
+     *
      * @return string The characters
      */
     protected function loadCharacters($base)
