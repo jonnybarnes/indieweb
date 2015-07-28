@@ -61,6 +61,7 @@ class NotePrep
             $length = $siloLimit - (1 + 1 + mb_strlen($link)); //… + ' ' + link
             $tweet = $this->ellipsify($noteTwittered, $length, $twitter) . $link;
         }
+
         return $tweet;
     }
 
@@ -175,9 +176,7 @@ class NotePrep
             $tags[] = $tag;
         }
 
-        $tags = array_unique($tags);
-
-        return $tags;
+        return array_unique($tags);
     }
 
     /**
@@ -195,6 +194,7 @@ class NotePrep
     {
         $regex = '/\[(.*?)\]\((.*?)\)/';
         $twitterified = preg_replace($regex, '$1', $note);
+
         return $twitterified;
     }
 
@@ -209,6 +209,7 @@ class NotePrep
     {
         $regex = '/https?:\/\/twitter.com\/[a-zA-Z_]{1,20}\/status\/([0-9]*)/';
         preg_match($regex, $url, $match);
+
         return $match[1];
     }
 }
