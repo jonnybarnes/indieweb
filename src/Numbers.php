@@ -8,11 +8,11 @@ class Numbers
     protected $nb64chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$';
 
     /**
-     * NewBase64
+     * Convert a decimal number to NewBase64.
      *
-     * Convert a decimal number to NewBase64
-     * @param  int
-     * @return string
+     * @param  int  The decimal number
+     *
+     * @return string The converted number
      */
     public function numto64($num)
     {
@@ -20,11 +20,11 @@ class Numbers
     }
 
     /**
-     * Reverse NewBase64
+     * Convert a NewBase64 number to decimal.
      *
-     * Convert a NewBase64 number to decimal
-     * @param  string
-     * @return int
+     * @param  string  The NewBase64 number
+     *
+     * @return int The converted number
      */
     public function b64tonum($nb64num)
     {
@@ -32,11 +32,11 @@ class Numbers
     }
 
     /**
-     * NewBase60
+     * Convert a decimal number to NewBase60.
      *
-     * Convert a decimal number to NewBase60
-     * @param  int
-     * @return string
+     * @param  int  The decimal number
+     *
+     * @return string The converted number
      */
     public function numto60($num)
     {
@@ -44,11 +44,11 @@ class Numbers
     }
 
     /**
-     * Reverse NewBase60
+     * Convert a NewBas60 number to decimal.
      *
-     * Convert a NewBas60 number to decimal
-     * @param  string
-     * @return int
+     * @param  string  The NewBase60 number
+     *
+     * @return int The converted number
      */
     public function b60tonum($nb60num)
     {
@@ -56,11 +56,12 @@ class Numbers
     }
 
     /**
-     * The actual conversion logic.
+     * The actual conversion logic to go from decimal to NewBase*.
      *
-     * @param  int decimal number
-     * @param  int new base to conver to
-     * @return string
+     * @param  int  The decimal number
+     * @param  int  The base we are using
+     *
+     * @return string The converted number
      */
     protected function decToNewBase($num, $base)
     {
@@ -87,11 +88,12 @@ class Numbers
     }
 
     /**
-     * The actual conversion logic.
+     * The actual conversion logic to go from NewBase* to decimal.
      *
-     * @param  string new base number
-     * @param  int new base to conver to
-     * @return int
+     * @param  string  The NewBase* number
+     * @param  int     The base we are using
+     *
+     * @return int The converted number
      */
     protected function newBaseToDec($nbNum, $base)
     {
@@ -112,10 +114,10 @@ class Numbers
     }
 
     /**
-     * Load the right NewBase characters.
+     * Load the right NewBase* characters.
      *
-     * @param  int  the base
-     * @return string the characters
+     * @param  int  The base
+     * @return string The characters
      */
     protected function loadCharacters($base)
     {
