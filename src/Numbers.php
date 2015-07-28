@@ -84,6 +84,7 @@ class Numbers
             $string = $newBaseChars[$digit] . $string;
             $num = ($num - $digit) / $base;
         }
+
         return $sign . $string;
     }
 
@@ -107,7 +108,7 @@ class Numbers
         $num = 0;
         $chars = str_split($nbNum);
         foreach ($chars as $char) {
-            $num = array_key_exists($char, $map) ? $num*$base + $map[$char] : $num*$base;
+            $num = array_key_exists($char, $map) ? $num * $base + $map[$char] : $num * $base;
         }
 
         return $num;
