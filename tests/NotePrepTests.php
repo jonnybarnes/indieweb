@@ -50,7 +50,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Here we test a note that won't fit into a single tweet
+     * Test a note that won't fit into a single tweet.
      */
     public function testLongCreateTweet()
     {
@@ -92,7 +92,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     {
         $note = 'I love #PHP, how can you not? That would be #naïve';
         $actual = $this->noteprep->getTags($note);
-        $expected = array("php", "naive");
+        $expected = array('php', 'naive');
 
         $this->assertEquals($expected, $actual);
     }
@@ -104,7 +104,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     {
         $note = 'I love #PHP, it rules. #php';
         $actual = $this->noteprep->getTags($note);
-        $expected = array("php");
+        $expected = array('php');
 
         $this->assertEquals($expected, $actual);
     }
