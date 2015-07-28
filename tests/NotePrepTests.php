@@ -17,8 +17,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the length checker against various strings
-     *
+     * Test the length checker against various strings.
      */
     public function testTweetLength()
     {
@@ -28,8 +27,8 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
             'Naïve words',
         );
 
-        $actual = [];
-        foreach($array as $entry) {
+        $actual = array();
+        foreach ($array as $entry) {
             $actual[] = $this->noteprep->tweetLength($entry);
         }
 
@@ -40,8 +39,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
 
     /**
      * This is the simplest situation, the tweet is short enough that we
-     * can add a permashortcitation at the end and be under 140 chars
-     *
+     * can add a permashortcitation at the end and be under 140 chars.
      */
     public function testShortCreateTweet()
     {
@@ -53,7 +51,6 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
 
     /**
      * Here we test a note that won't fit into a single tweet
-     *
      */
     public function testLongCreateTweet()
     {
@@ -65,8 +62,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Here we test a note with some URLs in
-     *
+     * Test a note with some URLs in.
      */
     public function testWithURLCreateTweet()
     {
@@ -77,6 +73,9 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * Test that markdown is correctly simplified.
+     */
     public function testNoteWithMarkdown()
     {
         $note = "This is [a link](http://www.example.org/) about a [topic](http://www.example.com/).";
@@ -87,8 +86,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Here we test the retreival of hashtags from a note
-     *
+     * Test the retreival of hashtags from a note.
      */
     public function testGetTags()
     {
@@ -100,8 +98,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Here we test a note that has a repeated tag, maybe due to different cases
-     *
+     * Test a note that has a repeated tag, maybe due to different cases.
      */
     public function testMultipleTagsInGetTags()
     {
@@ -113,8 +110,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that we get the ID back from a twitter status URL
-     *
+     * Test that we get the ID back from a twitter status URL.
      */
     public function testReplyTweetId()
     {
@@ -126,9 +122,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group issue-1-reg
-     * Test that hashtags get included
-     *
+     * Test that hashtags get included.
      */
     public function testLongNoteWithHashtags()
     {
@@ -140,8 +134,7 @@ class NotePrepTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * A note that failed for being too long
-     *
+     * A note that failed for being too long.
      */
     public function testATWeetThatFailedIRL()
     {
