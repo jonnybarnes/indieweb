@@ -20,7 +20,6 @@ class NotePrep
         return $noteNFC;
     }
 
-
     /**
      * Create a version of the note suitable for POSSEing.
      *
@@ -78,7 +77,7 @@ class NotePrep
         $regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
         //we swap any URLs for 23chars and then count
         $tweet = preg_replace($regex, '12345678901234567890123', $noteNFC);
-        $len = mb_strlen($tweet, "UTF-8");
+        $len = mb_strlen($tweet, 'UTF-8');
 
         return $len;
     }
@@ -104,8 +103,8 @@ class NotePrep
         }
 
         //cut the string, probably now in the middle of word so move back to last space
-        $noteNFCStart = mb_substr($noteNFC, 0, $length, "UTF-8");
-        $noteNFCStartTrunc = mb_strrchr($noteNFCStart, ' ', true, "UTF-8");
+        $noteNFCStart = mb_substr($noteNFC, 0, $length, 'UTF-8');
+        $noteNFCStartTrunc = mb_strrchr($noteNFCStart, ' ', true, 'UTF-8');
 
         //check for punctuation
         $badPunctuation = '@$-~*()_+[]{}|;,<>.';
@@ -121,14 +120,14 @@ class NotePrep
         }
         $tags = ltrim($tags);
         if (mb_strlen($tags) > 0) {
-            $tagsLength = mb_strlen($tags, "UTF-8");
-            $noteLength = mb_strlen($noteNFCStartTrunc, "UTF-8");
-            $noteNFCStartTruncStart = mb_substr($noteNFCStartTrunc, 0, $noteLength - $tagsLength, "UTF-8");
+            $tagsLength = mb_strlen($tags, 'UTF-8');
+            $noteLength = mb_strlen($noteNFCStartTrunc, 'UTF-8');
+            $noteNFCStartTruncStart = mb_substr($noteNFCStartTrunc, 0, $noteLength - $tagsLength, 'UTF-8');
             $noteNFCStartTruncStartTrim = rtrim($noteNFCStartTruncStart, $badPunctuation);
-            if (mb_strlen($noteNFCStartTruncStartTrim, "UTF-8") < mb_strlen($noteNFCStartTruncStart, "UTF-8")) {
+            if (mb_strlen($noteNFCStartTruncStartTrim, 'UTF-8') < mb_strlen($noteNFCStartTruncStart, 'UTF-8')) {
                 $noteNFCStartTruncStart = $noteNFCStartTruncStartTrim . ' ';
             }
-            $noteNFCStartTruncStartTrunc = mb_strrchr($noteNFCStartTruncStart, ' ', true, "UTF-8");
+            $noteNFCStartTruncStartTrunc = mb_strrchr($noteNFCStartTruncStart, ' ', true, 'UTF-8');
             $noteNFCStartTrunc = rtrim($noteNFCStartTruncStartTrunc, $badPunctuation) . '… ' . $tags;
         }
 
@@ -161,8 +160,8 @@ class NotePrep
      */
     public function getTags($note)
     {
-        $tags = [];
-        $tagstemp = [];
+        $tags = array();
+        $tagstemp = array();
         preg_match_all('/#([^\s<>]+)\b/', $note, $tagstemp);
         foreach ($tagstemp[1] as $tag) {
             $tag = mb_strtolower(
@@ -171,7 +170,7 @@ class NotePrep
                     '$1',
                     htmlentities($tag)
                 ),
-                "UTF-8"
+                'UTF-8'
             );
             $tags[] = $tag;
         }
@@ -195,7 +194,7 @@ class NotePrep
     public function twitterify($note)
     {
         $regex = '/\[(.*?)\]\((.*?)\)/';
-        $twitterified = preg_replace($regex, "$1", $note);
+        $twitterified = preg_replace($regex, '$1', $note);
         return $twitterified;
     }
 
@@ -210,8 +209,6 @@ class NotePrep
     {
         $regex = '/https?:\/\/twitter.com\/[a-zA-Z_]{1,20}\/status\/([0-9]*)/';
         preg_match($regex, $url, $match);
-        $id = $match[1];
-
-        return $id;
+        return $match[1];
     }
 }
