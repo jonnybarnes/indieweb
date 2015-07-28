@@ -22,7 +22,7 @@ class NotePrep
 
 
     /**
-     * Create a version of the note suitable for POSSEing
+     * Create a version of the note suitable for POSSEing.
      *
      * @param  string  The full note
      * @param  string  The Short URL host
@@ -37,7 +37,7 @@ class NotePrep
     {
         $noteNFC = $this->normalizeNFC($note);
         $noteTwittered = $this->twitterify($noteNFC);
-        $linkLength = mb_strlen($shorturl, "UTF-8") + mb_strlen($shorturlId, "UTF-8") + 4; //4 = 'SPACE' + ( + / + )
+        $linkLength = mb_strlen($shorturl, 'UTF-8') + mb_strlen($shorturlId, 'UTF-8') + 4; //4 = 'SPACE' + ( + / + )
         if ($ssl == true) {
             $linkLength = $linkLength + 8; // https://
         } else {
@@ -66,9 +66,12 @@ class NotePrep
     }
 
     /**
-     * Check the length of a note for Twitter
-     * taking into account twitter subs URLs
+     * Check the length of a note for Twitter taking into account twitter
+     * substitutes the URLs.
      *
+     * @param  string  The note
+     *
+     * @return int The length
      */
     public function tweetLength($noteNFC)
     {
@@ -81,9 +84,13 @@ class NotePrep
     }
 
     /**
-     * cut tweet in length to fit into 140 chars including
-     * permalink
+     * Cut a note in length to fit into the required character limit.
      *
+     * @param  string  The note
+     * @param  int     The character limit
+     * @param  bool    Twitter?
+     *
+     * @return string The ellipsified note
      */
     public function ellipsify($noteNFC, $length, $twitter)
     {
@@ -140,13 +147,17 @@ class NotePrep
     }
 
     /**
-     * Given a note with #tag s in, the returns an array of those tags
-     * without the # character
-     * Further, the tags array will have tags that are lowercase and where the basic
-     * diacritic accents are removed, i.e. Naïve => naive
+     * Get the tags from a note.
+     *
+     * Given a note with `#tag`s in, return an array of those tags without the
+     * # character. Further, the tags array will have tags that are lowercase
+     * and where the basic diacritic accents are removed, i.e. Naïve => naive.
      * This is for searching purposes. Though I'm not sure if this is the place
      * to solve this problem.
      *
+     * @param  string  The note
+     *
+     * @return array The tags
      */
     public function getTags($note)
     {
@@ -171,10 +182,15 @@ class NotePrep
     }
 
     /**
-     * We need to remove egregious markdown that Twitter won't like.
-     * For links, leave the text 'unclickable'. If the URL is massively
-     * important then explicitly include it.
+     * Make the POSSE version of the note suitable for Twitter.
      *
+     * We need to remove egregious markdown that Twitter won’t like. For links,
+     * leave the text “unclickable”. If the URL is massively important then
+     * it should have been explicitly included.
+     *
+     * @param  string  The note
+     *
+     * @return string The modified note
      */
     public function twitterify($note)
     {
@@ -184,8 +200,11 @@ class NotePrep
     }
 
     /**
-     * Grab the status id from a twitter URL
+     * Grab the status id from a twitter URL.
      *
+     * @param  string  The URL
+     *
+     * @return int The tweet ID
      */
     public function replyTweetId($url)
     {
