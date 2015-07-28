@@ -22,8 +22,16 @@ class NotePrep
 
 
     /**
-     * Create Note
+     * Create a version of the note suitable for POSSEing
      *
+     * @param  string  The full note
+     * @param  string  The Short URL host
+     * @param  string  The Short URL path
+     * @param  int     The character limit for the silo
+     * @param  bool    Wether we are posting to Twitter, which needs special considerations
+     * @param  bool    Wether we are using https
+     *
+     * @return string The modified note
      */
     public function createNote($note, $shorturl, $shorturlId, $siloLimit, $twitter = true, $ssl = false)
     {
