@@ -7,8 +7,10 @@ use Normalizer;
 class NotePrep
 {
     /**
-     * Normalize to Unicode NFC
+     * Normalize to Unicode NFC.
      *
+     * @param  string  The original note
+     * @return string  The normalized note
      */
     public function normalizeNFC($note)
     {
