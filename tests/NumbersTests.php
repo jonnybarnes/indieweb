@@ -17,8 +17,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Testing number to NewBase64
-     *
+     * Test converting a decimal number to NewBase64.
      */
     public function testNumTo64()
     {
@@ -30,8 +29,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Testing reverse of NewBase64
-     *
+     * Test converting NewBase64 number to decimal.
      */
     public function testB64ToNum()
     {
@@ -43,8 +41,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test both NewBase64 methods at once
-     *
+     * Test both NewBase64 methods at once.
      */
     public function testBothNewBase64()
     {
@@ -55,8 +52,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test NewBase60
-     *
+     * Test converting a decimal number NewBase60.
      */
     public function testNumTo60()
     {
@@ -68,8 +64,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Revers NewBase60
-     *
+     * Test converting a  NewBase60 number to decimal.
      */
     public function testB60ToNum()
     {
@@ -81,8 +76,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test both NewBase60
-     *
+     * Test both NewBase60 methods at once.
      */
     public function testBothNewBase60()
     {
