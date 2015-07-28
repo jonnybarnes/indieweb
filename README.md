@@ -30,3 +30,8 @@ $originalNote = 'A lovely note.';
 $posseCopy = $noteprep->createNote($note, 'https://abc.de/n/id', 140, true);
 echo $posseCopy;// 'A lovely note. (https://abc.de/n/id)'
 ```
+
+##License
+As a library intended for use in the [IndieWeb](https://indiewebcamp.com) this
+is Licensed under the
+[Creative Commons Zero](https://spdx.org/licenses/CC0-1.0.html) license.

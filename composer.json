@@ -4,7 +4,7 @@
     "description": "IndieWeb helper functions",
     "keywords": ["posse", "indieweb"],
     "homepage": "https://github.com/jonnybarnes/indieweb",
-    "license": "MIT",
+    "license": "CC0-1.0",
     "authors": [
         {
             "name": "Jonny Barnes",
