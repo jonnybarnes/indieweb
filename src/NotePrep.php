@@ -82,7 +82,7 @@ class NotePrep
         //if we are dealing with twitter, we need to account for their link medling
         if ($twitter === true) {
             //because we will be linking back, that also gets changed, this affect where we cut the note
-            $length = 115;//140 - 23 - 1 - 1
+            $length = 115; //140 - 23 - 1 - 1
             $regex = '#(https?://[a-z0-9/.?=+_-]*)#i';
             preg_match_all($regex, $noteNFC, $urls, PREG_PATTERN_ORDER);
             $noteNFC = preg_replace($regex, 'https://t.co/4567890123', $noteNFC);
