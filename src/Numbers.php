@@ -1,6 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Jonnybarnes\IndieWeb;
+
+use InvalidArgumentException;
 
 class Numbers
 {
@@ -10,11 +14,11 @@ class Numbers
     /**
      * Convert a decimal number to NewBase64.
      *
-     * @param  int  The decimal number
+     * @param $num int The decimal number
      *
-     * @return string The converted number
+     * @return string
      */
-    public function numto64($num)
+    public function numto64(int $num): string
     {
         return $this->decToNewBase($num, 64);
     }
@@ -22,11 +26,11 @@ class Numbers
     /**
      * Convert a NewBase64 number to decimal.
      *
-     * @param  string  The NewBase64 number
+     * @param $nb64num string The NewBase64 number
      *
-     * @return int The converted number
+     * @return int
      */
-    public function b64tonum($nb64num)
+    public function b64tonum(string $nb64num): int
     {
         return $this->newBaseToDec($nb64num, 64);
     }
@@ -34,11 +38,11 @@ class Numbers
     /**
      * Convert a decimal number to NewBase60.
      *
-     * @param  int  The decimal number
+     * @param $num int The decimal number
      *
-     * @return string The converted number
+     * @return string
      */
-    public function numto60($num)
+    public function numto60(int $num): string
     {
         return $this->decToNewBase($num, 60);
     }
@@ -46,11 +50,11 @@ class Numbers
     /**
      * Convert a NewBas60 number to decimal.
      *
-     * @param  string  The NewBase60 number
+     * @param $nb60num string The NewBase60 number
      *
-     * @return int The converted number
+     * @return int
      */
-    public function b60tonum($nb60num)
+    public function b60tonum(string $nb60num): int
     {
         return $this->newBaseToDec($nb60num, 60);
     }
@@ -58,12 +62,12 @@ class Numbers
     /**
      * The actual conversion logic to go from decimal to NewBase*.
      *
-     * @param  int  The decimal number
-     * @param  int  The base we are using
+     * @param $num int The decimal number
+     * @param $base int The base we are using
      *
-     * @return string The converted number
+     * @return string
      */
-    protected function decToNewBase($num, $base)
+    protected function decToNewBase(int $num, int $base): string
     {
         $newBaseChars = $this->loadCharacters($base);
 
@@ -91,12 +95,12 @@ class Numbers
     /**
      * The actual conversion logic to go from NewBase* to decimal.
      *
-     * @param  string  The NewBase* number
-     * @param  int     The base we are using
+     * @param $nbNum string The NewBase* number
+     * @param $base int The base we are using
      *
-     * @return int The converted number
+     * @return int
      */
-    protected function newBaseToDec($nbNum, $base)
+    protected function newBaseToDec(string $nbNum, int $base): int
     {
         $newBaseChars = $this->loadCharacters($base);
 
@@ -111,17 +115,19 @@ class Numbers
             $num = array_key_exists($char, $map) ? $num * $base + $map[$char] : $num * $base;
         }
 
-        return $num;
+        return (int) $num;
     }
 
     /**
      * Load the right NewBase* characters.
      *
-     * @param  int  The base
+     * @param $base int
+     *
+     * @throws InvalidArgumentException
      *
      * @return string The characters
      */
-    protected function loadCharacters($base)
+    protected function loadCharacters(int $base): string
     {
         switch ($base) {
             case 60:
@@ -129,7 +135,7 @@ class Numbers
             case 64:
                 return $this->nb64chars;
             default:
-                throw new \Exception('Unsupported number base');
+                throw new InvalidArgumentException('Unsupported base, must be `60` or `64`');
         }
     }
 }
