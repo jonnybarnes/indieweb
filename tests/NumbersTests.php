@@ -1,17 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
+use Jonnybarnes\IndieWeb\Numbers;
+use PHPUnit\Framework\TestCase;
+
 require __DIR__.'/../src/Numbers.php';
 
-class NumbersTests extends PHPUnit_Framework_TestCase
+class NumbersTests extends TestCase
 {
+    /** @var Numbers */
     protected $numbers;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->numbers = new \Jonnybarnes\IndieWeb\Numbers();
+        $this->numbers = new Numbers();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->numbers = null;
     }
@@ -21,11 +27,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
      */
     public function testNumTo64()
     {
-        $num = 346;
-        $actual = $this->numbers->numto64($num);
-        $excpected = '5S';
-
-        $this->assertEquals($excpected, $actual);
+        $this->assertEquals('5S', $this->numbers->numto64(346));
     }
 
     /**
@@ -33,11 +35,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
      */
     public function testB64ToNum()
     {
-        $var = '5S';
-        $actual = $this->numbers->b64tonum($var);
-        $excpected = 346;
-
-        $this->assertEquals($excpected, $actual);
+        $this->assertEquals(346, $this->numbers->b64tonum('5S'));
     }
 
     /**
@@ -45,10 +43,7 @@ class NumbersTests extends PHPUnit_Framework_TestCase
      */
     public function testBothNewBase64()
     {
-        $var = 123;
-        $actual = $this->numbers->b64tonum($this->numbers->numto64($var));
-
-        $this->assertEquals($var, $actual);
+        $this->assertEquals(123, $this->numbers->b64tonum($this->numbers->numto64(123)));
     }
 
     /**
@@ -56,23 +51,15 @@ class NumbersTests extends PHPUnit_Framework_TestCase
      */
     public function testNumTo60()
     {
-        $num = 123;
-        $actual = $this->numbers->numto60($num);
-        $excpected = '23';
-
-        $this->assertEquals($excpected, $actual);
+        $this->assertEquals('23', $this->numbers->numto60(123));
     }
 
     /**
-     * Test converting a  NewBase60 number to decimal.
+     * Test converting a NewBase60 number to decimal.
      */
     public function testB60ToNum()
     {
-        $string = '23';
-        $actual = $this->numbers->b60tonum($string);
-        $excpected = 123;
-
-        $this->assertEquals($excpected, $actual);
+        $this->assertEquals(123, $this->numbers->b60tonum('23'));
     }
 
     /**
@@ -80,9 +67,6 @@ class NumbersTests extends PHPUnit_Framework_TestCase
      */
     public function testBothNewBase60()
     {
-        $num = 123;
-        $actual = $this->numbers->b60tonum($this->numbers->numto60($num));
-
-        $this->assertEquals($num, $actual);
+        $this->assertEquals(123, $this->numbers->b60tonum($this->numbers->numto60(123)));
     }
 }
