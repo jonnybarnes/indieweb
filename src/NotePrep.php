@@ -121,7 +121,7 @@ class NotePrep
                     $truncatedNote[mb_strlen($truncForTags)],
                     array_merge(
                         str_split($badPunctuation),
-                        array(' ')
+                        [' ']
                     )
                 ) === false
             ) {
