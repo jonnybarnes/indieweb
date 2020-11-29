@@ -15,7 +15,7 @@
         "issues": "https://github.com/jonnybarnes/indieweb/issues"
     },
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "ext-intl": "*",
         "ext-mbstring": "*"
     },
